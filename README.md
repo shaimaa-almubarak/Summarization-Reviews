@@ -1,4 +1,6 @@
-Overview
+#AI-Powered Product Review Summarization System: 
+
+Overview:
 This project is a monorepo application that demonstrates AI-powered review summarization. It fetches product reviews from a PostgreSQL database and uses the Hugging Face Inference API (with Meta's Llama 3.1 model) to generate intelligent summaries highlighting both positive and negative themes.
 The application consists of:
 
@@ -263,61 +265,7 @@ Generates AI-powered summary of product reviews.
 Response:
 json"Customers praise the product's durability and ease of use. Some noted slow shipping times."
 
-Database Schema
-Products Table
-prismamodel Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  price       Float
-  reviews     Review[]
-  summary     Summary?
-  
-  @@map("products")
-}
-Reviews Table
-prismamodel Review {
-  id        Int      @id @default(autoincrement())
-  author    String
-  rating    Int      @db.SmallInt
-  content   String
-  createdAt DateTime @default(now())
-  productId Int
-  product   Product  @relation(fields: [productId], references: [id])
-  
-  @@map("reviews")
-}
-Summaries Table
-prismamodel Summary {
-  id         Int      @id @default(autoincrement())
-  productId  Int      @unique
-  content    String
-  genratedAt DateTime @default(now())
-  expiresAt  DateTime
-  product    Product  @relation(fields: [productId], references: [id])
-  
-  @@map("summaries")
-}
 
-Contributing
-Contributions are welcome! Please follow these guidelines:
-
-Fork the repository
-Create a feature branch (git checkout -b feature/AmazingFeature)
-Commit your changes (git commit -m 'Add some AmazingFeature')
-Push to the branch (git push origin feature/AmazingFeature)
-Open a Pull Request
-
-Code Standards
-
-Follow existing code style (enforced by Prettier)
-Write TypeScript with strict type checking
-Add tests for new features (when applicable)
-Update documentation as needed
-
-
-License
-This project is provided as-is for educational and demonstration purposes. No explicit license is specified in the repository. If you plan to use this code, please contact the repository owner for licensing information.
 
 Acknowledgements
 
@@ -327,24 +275,5 @@ Prisma - For the excellent ORM and database toolkit
 Neon - For serverless PostgreSQL infrastructure
 Bun - For the fast JavaScript runtime
 
-
-Additional Notes
-Current Limitations
-
-Hardcoded Product ID: The client currently displays reviews for product ID 2 only
-No Authentication: The API has no authentication mechanism
-Limited Error Handling: Some edge cases may not be fully handled
-No Rate Limiting: API calls to Hugging Face are not rate-limited
-Seed Data: No seed script is provided; database must be manually populated
-
-Future Enhancements
-
-Add product selection UI
-Implement user authentication
-Add review submission functionality
-Create admin dashboard for product management
-Implement API rate limiting and request throttling
-Add comprehensive test suite
-Deploy to production environment
 
 Built with ❤️ using React, Express, Prisma, and AI
