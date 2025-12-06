@@ -1,5 +1,5 @@
 import { PrismaNeon } from '@prisma/adapter-neon';
-import { PrismaClient, type Review } from '../generated/prisma/client.ts';
+import { PrismaClient, type Review } from '../generated/prisma/client';
 import dayjs from 'dayjs';
 const connectionString = `${process.env.DATABASE_URL}`;
 const adapter = new PrismaNeon({ connectionString });
