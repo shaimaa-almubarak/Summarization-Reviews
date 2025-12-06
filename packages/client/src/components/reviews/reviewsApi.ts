@@ -17,18 +17,16 @@ export type SummarizeResponse = {
    summary: string;
 };
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
 export const reviewsApi = {
    fetchReviews(productId: number) {
-      return axios
-         .get<GetReviewsResponse>(`/api/products/${productId}/reviews`)
-         .then((res) => res.data);
+      const url = `${API_BASE_URL}/api/products/${productId}/reviews`;
+      return axios.get<GetReviewsResponse>(url).then((res) => res.data);
    },
 
    summarizeReviews(productId: number) {
-      return axios
-         .post<SummarizeResponse>(
-            `/api/products/${productId}/reviews/summarize`
-         )
-         .then((res) => res.data);
+      const url = `${API_BASE_URL}/api/products/${productId}/reviews/summarize`;
+      return axios.post<SummarizeResponse>(url).then((res) => res.data);
    },
 };

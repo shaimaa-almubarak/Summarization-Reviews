@@ -13,7 +13,12 @@ export default defineConfig({
    },
    server: {
       proxy: {
-         '/api': 'http://localhost:3000',
+         '/api': {
+            target: 'https://server-production-2858.up.railway.app',
+            changeOrigin: true,
+            secure: false,
+            ws: true,
+         },
       },
    },
 });
