@@ -1,87 +1,25 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import express from 'express';
 import dotenv from 'dotenv';
-import router from './route.js'; // Add .js extension for ESM
+import express from 'express';
+import router from './route';
 
 dotenv.config();
 
 const app = express();
-
-// CORS middleware
-app.use((req, res, next) => {
-   const origin = req.headers.origin;
-
-   if (process.env.NODE_ENV === 'development') {
-      res.setHeader('Access-Control-Allow-Origin', origin || '*');
-   } else {
-      if (origin) {
-         if (origin.includes('vercel.app') || origin.includes('localhost')) {
-            res.setHeader('Access-Control-Allow-Origin', origin);
-         } else if (process.env.ALLOWED_ORIGINS) {
-            const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
-            if (allowedOrigins.includes(origin)) {
-               res.setHeader('Access-Control-Allow-Origin', origin);
-            }
-         }
-      }
-   }
-
-   res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PUT, DELETE, OPTIONS'
-   );
-   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-   res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-   if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-   }
-
-   next();
-});
-
 app.use(express.json());
 app.use(router);
 
-// Global error handler
-app.use(
-   (
-      err: any,
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-   ) => {
-      console.error('Unhandled error:', err);
-      if (!res.headersSent) {
-         res.status(500).json({ error: 'Internal Server Error' });
-      }
-   }
-);
+const port =
+   process.env.PORT || 'https://server-production-e2d57.up.railway.app';
 
-export default function handler(req: VercelRequest, res: VercelResponse): void {
-   try {
-      console.log(`[Vercel] ${req.method} ${req.url}`);
-
-      const required = ['DATABASE_URL', 'HUGGINGFACE_API_KEY'];
-      const missing = required.filter((k) => !process.env[k]);
-
-      if (missing.length > 0) {
-         console.error('Missing env vars:', missing);
-         res.status(500).json({
-            error: 'Configuration Error',
-            missing,
-         });
-         return;
-      }
-
-      app(req, res);
-   } catch (error) {
-      console.error('[Vercel Handler] Error:', error);
-      if (!res.headersSent) {
-         res.status(500).json({
-            error: 'Internal Server Error',
-            message: error instanceof Error ? error.message : 'Unknown error',
-         });
-      }
-   }
+// Start an HTTP listener for platforms that require a running web process
+// (e.g., Railway, Render, Heroku). We avoid starting the listener when
+// running under Vercel serverless (Vercel imports this module) by checking
+// the `VERCEL` environment variable. If `VERCEL` is set, Vercel expects a
+// serverless handler instead of a long-running process.
+if (!process.env.VERCEL) {
+   const port = Number(process.env.PORT) || 3000;
+   app.listen(port, () => {
+      // eslint-disable-next-line no-console
+      console.log(`Server listening on http://localhost:${port}`);
+   });
 }

@@ -29,8 +29,49 @@ const reviewList = ({ productId }: Props) => {
       );
    }
    if (reviewQuery.isError) {
+      const error = reviewQuery.error as any;
+      const errorMessage =
+         error?.message ||
+         error?.response?.data?.error ||
+         'Could not fetch reviews. Try again!';
+      const statusCode = error?.response?.status;
+
+      // eslint-disable-next-line no-console
+      console.error('Review query error:', {
+         error: reviewQuery.error,
+         message: errorMessage,
+         status: statusCode,
+         response: error?.response?.data,
+      });
+
       return (
-         <p className="text-red-500">Could not fetch reviews. Try again!</p>
+         <div className="text-red-500 p-4 border border-red-300 rounded">
+            <p className="font-semibold">Could not fetch reviews. Try again!</p>
+            <p className="text-sm mt-2">
+               {statusCode === 404 &&
+                  'Product not found. Please check the product ID.'}
+               {statusCode === 400 && `Invalid request: ${errorMessage}`}
+               {!statusCode && errorMessage}
+            </p>
+            {import.meta.env.DEV && (
+               <details className="mt-2 text-xs">
+                  <summary className="cursor-pointer">
+                     Technical Details
+                  </summary>
+                  <pre className="mt-2 p-2 bg-gray-100 rounded overflow-auto">
+                     {JSON.stringify(
+                        {
+                           error: errorMessage,
+                           status: statusCode,
+                           fullError: error,
+                        },
+                        null,
+                        2
+                     )}
+                  </pre>
+               </details>
+            )}
+         </div>
       );
    }
 
