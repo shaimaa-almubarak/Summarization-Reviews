@@ -3,7 +3,20 @@
    "builds": [
       {
          "src": "api/index.ts",
-         "use": "@vercel/node"
+         "use": "@vercel/node",
+         "config": {
+            "includeFiles": [
+               "index.ts",
+               "route.ts",
+               "controllers/**",
+               "services/**",
+               "repositories/**",
+               "lib/**",
+               "llm/**",
+               "generated/**",
+               "prisma/**"
+            ]
+         }
       }
    ],
    "routes": [

@@ -5,15 +5,6 @@ import { reviewsController } from './controllers/review.controller';
 dotenv.config();
 const router = express.Router();
 
-// Health check endpoint for deployment verification
-router.get('/api/health', (req: Request, res: Response) => {
-   res.json({
-      ok: true,
-      timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development',
-   });
-});
-
 // Root endpoint
 router.get('/', (req: Request, res: Response) => {
    res.json({
@@ -27,9 +18,13 @@ router.get('/', (req: Request, res: Response) => {
    });
 });
 
-// Health check endpoint for testing
+// Health check endpoint for deployment verification
 router.get('/api/health', (req: Request, res: Response) => {
-   res.json({ ok: true, timestamp: new Date().toISOString() });
+   res.json({
+      ok: true,
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+   });
 });
 
 // API routes
