@@ -5,13 +5,14 @@
    "private": true,
    "scripts": {
       "dev": "bun run index.ts",
-      "prepare": "sh -c \"if [ -d .git ]; then husky install; fi\""
+      "prepare": "node -e \"const fs = require('fs'); if (fs.existsSync('.git')) { require('child_process').spawnSync('husky', ['install'], { stdio: 'inherit' }); }\""
    },
    "devDependencies": {
       "@types/bun": "latest",
       "concurrently": "^9.2.1",
       "husky": "^9.1.7",
-      "lint-staged": "^16.2.7"
+      "lint-staged": "^16.2.7",
+      "prettier": "^3.2.5"
    },
    "peerDependencies": {
       "typescript": "^5"
