@@ -1,9 +1,6 @@
-import { PrismaNeon } from '@prisma/adapter-neon';
-import { PrismaClient, type Review } from '../generated/prisma/client';
+import { type Review } from '../generated/prisma/client';
+import { prisma } from '../lib/prisma';
 import dayjs from 'dayjs';
-const connectionString = `${process.env.DATABASE_URL}`;
-const adapter = new PrismaNeon({ connectionString });
-const prisma = new PrismaClient({ adapter });
 export const reviewRepository = {
    async getReviews(productId: number, Limit?: number): Promise<Review[]> {
       return prisma.review.findMany({
