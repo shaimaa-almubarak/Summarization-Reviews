@@ -1,10 +1,11 @@
-import './App.css';
-import ReviewList from './components/reviews/reviewList';
+import ReviewList from './components/reviews/ReviewList';
+
 function App() {
    return (
-      <div className="px-[2%] flex flex-col h-screen py-6 ">
-         <ReviewList productId={2} />
+      <div className="p-4 h-screen w-full">
+         <ReviewList productId={3} />
       </div>
    );
 }
+
 export default App;

@@ -11,6 +11,9 @@ export default defineConfig({
          '@': path.resolve(__dirname, './src'),
       },
    },
-   // Dev proxy: forward /api requests to the local backend during development
-   server: { proxy: { '/api': 'http://localhost:3000' } },
+   server: {
+      proxy: {
+         '/api': 'http://localhost:3000',
+      },
+   },
 });
