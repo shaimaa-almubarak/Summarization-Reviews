@@ -3,9 +3,9 @@ import express from 'express';
 import router from './route';
 
 dotenv.config();
-
+const cors = require('cors'); // <--- Import cors
 const app = express();
-app.use(express.json());
+app.use(cors());
 app.use(router);
 
 if (!process.env.VERCEL) {
