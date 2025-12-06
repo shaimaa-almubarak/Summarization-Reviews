@@ -1,4 +1,4 @@
-import ReviewList from '../src/components/reviews/ReviewList';
+import ReviewList from '@/components/reviews/ReviewList';
 
 function App() {
    return (
